@@ -7,4 +7,5 @@ python run.py --model_type electra \
               --adversarial_fgm \
               --gradient_accumulation_steps 4 \
               --learning_rate 5e-5 \
-              --warmup_steps 400
+              --warmup_steps 400 \
+              --output_dir ./electra_result

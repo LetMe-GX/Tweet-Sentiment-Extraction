@@ -444,12 +444,6 @@ def evaluate(args, model, tokenizer, prefix=""):
             args.null_score_diff_threshold,
             tokenizer,
         )
-    sub_df = pd.read_csv('./input/tweet-sentiment-extraction/sample_submission.csv')
-    predictions_df = pd.DataFrame.from_dict(predictions)
-
-    sub_df['selected_text'] = predictions_df['answer']
-    output_submission_file = os.path.join(args.output_dir, "submission.csv")
-    sub_df.to_csv(output_submission_file, index=False)
 
     # Compute the F1 and exact scores.
     results = squad_evaluate(examples, predictions)

@@ -38,6 +38,7 @@ from transformers import (
     XLNetForQuestionAnsweringSimple
 )
 
+from qa.modeling_electra import ElectraForQuestionAnswering
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +50,7 @@ MODEL_FOR_QUESTION_ANSWERING_MAPPING = OrderedDict(
         (AlbertConfig, AlbertForQuestionAnswering),
         (RobertaConfig, RobertaForQuestionAnswering),
         (BertConfig, BertForQuestionAnswering),
+        (ElectraConfig, ElectraForQuestionAnswering),
         (XLNetConfig, XLNetForQuestionAnsweringSimple),
         (FlaubertConfig, FlaubertForQuestionAnsweringSimple),
         (XLMConfig, XLMForQuestionAnsweringSimple),

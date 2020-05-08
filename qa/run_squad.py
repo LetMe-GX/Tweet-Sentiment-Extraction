@@ -46,6 +46,7 @@ from transformers.data.metrics.squad_metrics import (
 from transformers.data.processors.squad import SquadResult, SquadV1Processor, SquadV2Processor
 
 from .modeling_auto import AutoModelForQuestionAnswering
+from .adversarial import PGD, FGM
 
 try:
     from torch.utils.tensorboard import SummaryWriter
@@ -74,6 +75,9 @@ def to_list(tensor):
 
 
 def train(args, train_dataset, model, tokenizer):
+    K = 3
+    pgd = PGD(model)
+    fgm = FGM(model)
     """ Train the model """
     if args.local_rank in [-1, 0]:
         tb_writer = SummaryWriter()
@@ -215,6 +219,44 @@ def train(args, train_dataset, model, tokenizer):
                     scaled_loss.backward()
             else:
                 loss.backward()
+
+            if args.adversarial_fgm:
+                fgm.attack()
+                loss_adv = model(**inputs)
+                if args.n_gpu > 1:
+                    loss_adv = loss_adv.mean()
+                if args.gradient_accumulation_steps > 1:
+                    loss_adv = loss_adv / args.gradient_accumulation_steps
+
+                if args.fp16:
+                    with amp.scale_loss(loss_adv, optimizer) as scaled_loss:
+                        scaled_loss.backward()
+                else:
+                    loss_adv.backward()
+                fgm.restore()
+
+            if args.adversarial_pgd:
+                pgd.backup_grad()
+                for t in range(K):
+                    pgd.attack(is_first_attack=(t == 0))
+                    if t != K - 1:
+                        model.zero_grad()
+                    else:
+                        pgd.restore_grad()
+                    loss_adv = model(**inputs)
+
+                    if args.n_gpu > 1:
+                        loss_adv = loss_adv.mean()  # mean() to average on multi-gpu parallel (not distributed) training
+                    if args.gradient_accumulation_steps > 1:
+                        loss_adv = loss_adv / args.gradient_accumulation_steps
+
+                    if args.fp16:
+                        with amp.scale_loss(loss_adv, optimizer) as scaled_loss:
+                            scaled_loss.backward()
+                    else:
+                        loss_adv.backward()
+
+                pgd.restore()
 
             tr_loss += loss.item()
             if (step + 1) % args.gradient_accumulation_steps == 0:
@@ -475,7 +517,7 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
     return dataset
 
 
-def run_squad(train_file, predict_file):
+def run_squad(train_file, predict_file, split=0):
     parser = argparse.ArgumentParser()
 
     # Required parameters
@@ -662,6 +704,8 @@ def run_squad(train_file, predict_file):
     parser.add_argument("--server_port", type=str, default="", help="Can be used for distant debugging.")
 
     parser.add_argument("--threads", type=int, default=1, help="multiple threads for converting example to features")
+    parser.add_argument("--adversarial_pgd", action="store_true", help="Whether do adversarial training.")
+    parser.add_argument("--adversarial_fgm", action="store_true", help="Whether do adversarial training.")
     args = parser.parse_args()
 
     if args.doc_stride >= args.max_seq_length - args.max_query_length:
@@ -815,7 +859,7 @@ def run_squad(train_file, predict_file):
             model.to(args.device)
 
             # Evaluate
-            result = evaluate(args, model, tokenizer, prefix=global_step)
+            result = evaluate(args, model, tokenizer, prefix=split)
 
             result = dict((k + ("_{}".format(global_step) if global_step else ""), v) for k, v in result.items())
             results.update(result)

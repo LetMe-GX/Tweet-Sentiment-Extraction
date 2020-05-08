@@ -1,7 +1,10 @@
 import json
+import os
 
 import numpy as np
+import pandas as pd
 from .preprocess import get_splits
+
 
 def jaccard(str1, str2):
     a = set(str1.lower().split())
@@ -9,14 +12,15 @@ def jaccard(str1, str2):
     c = a.intersection(b)
     return float(len(c)) / (len(a) + len(b) - len(c))
 
-def evaluate(splits, np_train, post_processing=False):
+
+def evaluate(splits, train_np, post_processing=False):
     K = len(splits)
     predictions = [json.load(open('results/predictions_' + str(i+1) + '.json', 'r')) for i in range(K)]
 
     train_score = [{'neutral':[], 'positive':[], 'negative':[], 'total':[]} for _ in range(K+1)]
     valid_score = [{'neutral':[], 'positive':[], 'negative':[], 'total':[]} for _ in range(K+1)]
 
-    for train_idx, line in enumerate(np_train):
+    for train_idx, line in enumerate(train_np):
         text_id = line[0]
         text = line[1]
         answer = line[2]
@@ -61,3 +65,11 @@ def evaluate(splits, np_train, post_processing=False):
                     print('all data')
                 print(sentiment + ' - ' + str(len(score)) + ' examples, average score: ' + str(score.mean()))
             print()
+
+if __name__ == "__main__":
+    splits = get_splits()
+    ROOT = './input/tweet-sentiment-extraction/'
+    train_df = pd.read_csv(os.path.join(ROOT, 'train.csv'))
+    train_np = np.array(train_df)
+
+    evaluate(splits, train_np)

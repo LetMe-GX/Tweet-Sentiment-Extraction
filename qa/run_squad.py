@@ -28,6 +28,7 @@ import torch
 from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
 from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm, trange
+import pandas as pd
 
 from transformers import (
     MODEL_FOR_QUESTION_ANSWERING_MAPPING,
@@ -222,7 +223,8 @@ def train(args, train_dataset, model, tokenizer):
 
             if args.adversarial_fgm:
                 fgm.attack()
-                loss_adv = model(**inputs)
+                outputs_adv = model(**inputs)
+                loss_adv = outputs_adv[0]
                 if args.n_gpu > 1:
                     loss_adv = loss_adv.mean()
                 if args.gradient_accumulation_steps > 1:
@@ -243,7 +245,8 @@ def train(args, train_dataset, model, tokenizer):
                         model.zero_grad()
                     else:
                         pgd.restore_grad()
-                    loss_adv = model(**inputs)
+                    outputs_adv = model(**inputs)
+                    loss_adv = outputs_adv[0]
 
                     if args.n_gpu > 1:
                         loss_adv = loss_adv.mean()  # mean() to average on multi-gpu parallel (not distributed) training
@@ -441,6 +444,12 @@ def evaluate(args, model, tokenizer, prefix=""):
             args.null_score_diff_threshold,
             tokenizer,
         )
+    sub_df = pd.read_csv('../input/tweet-sentiment-extraction/sample_submission.csv')
+    predictions_df = pd.DataFrame.from_dict(predictions)
+
+    sub_df['selected_text'] = predictions_df['answer']
+    output_submission_file = os.path.join(args.output_dir, "submission.csv")
+    sub_df.to_csv(output_submission_file, index=False)
 
     # Compute the F1 and exact scores.
     results = squad_evaluate(examples, predictions)

@@ -17,4 +17,5 @@ def get_submission(post_processing):
         else:
             submission.loc[i, 'selected_text'] = predictions[id_]
 
+    submission.to_csv('submission.csv', index=False)
 get_submission(False)

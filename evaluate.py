@@ -3,7 +3,7 @@ import os
 
 import numpy as np
 import pandas as pd
-from .preprocess import get_splits
+from preprocess import get_splits
 
 
 def jaccard(str1, str2):
@@ -14,7 +14,7 @@ def jaccard(str1, str2):
 
 
 def evaluate(splits, train_np, post_processing=False):
-    K = len(splits)
+    K = len(splits) - 1
     predictions = [json.load(open('results/predictions_' + str(i+1) + '.json', 'r')) for i in range(K)]
 
     train_score = [{'neutral':[], 'positive':[], 'negative':[], 'total':[]} for _ in range(K+1)]
@@ -72,4 +72,4 @@ if __name__ == "__main__":
     train_df = pd.read_csv(os.path.join(ROOT, 'train.csv'))
     train_np = np.array(train_df)
 
-    evaluate(splits, train_np)
+    evaluate(splits, train_np, post_processing=True)

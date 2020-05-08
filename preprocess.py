@@ -10,7 +10,7 @@ train_np = np.array(train_df)
 test_np = np.array(test_df)
 
 # Given a data size, return the train/valid indicies for K splits.
-splits=[]
+K = 5
 def split_data(num_examples, K=5):
     np.random.seed(0)
     idx = np.arange(num_examples)
@@ -32,7 +32,7 @@ def split_data(num_examples, K=5):
 
 
 def get_splits():
-    return splits
+    return split_data(len(train_np), K)
 
 
 # Convert data to SQuAD-style
@@ -81,7 +81,6 @@ def convert_data(data, directory, filename):
 
 
 def main():
-    K = 5
     splits = split_data(len(train_np), K)
 
     # convert k-fold train data

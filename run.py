@@ -1,7 +1,7 @@
 import os
 
 from qa.run_squad import run_squad
-K = 4
+K = 5
 ROOT = './input/tweet-sentiment-extraction/'
 
 def run(cross_validation):

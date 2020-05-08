@@ -444,7 +444,7 @@ def evaluate(args, model, tokenizer, prefix=""):
             args.null_score_diff_threshold,
             tokenizer,
         )
-    sub_df = pd.read_csv('../input/tweet-sentiment-extraction/sample_submission.csv')
+    sub_df = pd.read_csv('./input/tweet-sentiment-extraction/sample_submission.csv')
     predictions_df = pd.DataFrame.from_dict(predictions)
 
     sub_df['selected_text'] = predictions_df['answer']

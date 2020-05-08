@@ -475,7 +475,7 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
     return dataset
 
 
-def main():
+def run_squad(train_file, predict_file):
     parser = argparse.ArgumentParser()
 
     # Required parameters
@@ -493,15 +493,14 @@ def main():
         required=True,
         help="Path to pre-trained model or shortcut name selected in the list: " + ", ".join(ALL_MODELS),
     )
-    parser.add_argument(
-        "--output_dir",
-        default=None,
-        type=str,
-        required=True,
-        help="The output directory where the model checkpoints and predictions will be written.",
-    )
 
     # Other parameters
+    parser.add_argument(
+        "--output_dir",
+        default='./results',
+        type=str,
+        help="The output directory where the model checkpoints and predictions will be written.",
+    )
     parser.add_argument(
         "--data_dir",
         default=None,
@@ -511,14 +510,14 @@ def main():
     )
     parser.add_argument(
         "--train_file",
-        default=None,
+        default=train_file,
         type=str,
         help="The input training file. If a data dir is specified, will look for the file there"
         + "If no data dir or train/predict files are specified, will run with tensorflow_datasets.",
     )
     parser.add_argument(
         "--predict_file",
-        default=None,
+        default=predict_file,
         type=str,
         help="The input evaluation file. If a data dir is specified, will look for the file there"
         + "If no data dir or train/predict files are specified, will run with tensorflow_datasets.",
@@ -534,7 +533,7 @@ def main():
     )
     parser.add_argument(
         "--cache_dir",
-        default="",
+        default="./cache",
         type=str,
         help="Where do you want to store the pre-trained models downloaded from s3",
     )
@@ -553,20 +552,20 @@ def main():
 
     parser.add_argument(
         "--max_seq_length",
-        default=384,
+        default=192,
         type=int,
         help="The maximum total input sequence length after WordPiece tokenization. Sequences "
         "longer than this will be truncated, and sequences shorter than this will be padded.",
     )
     parser.add_argument(
         "--doc_stride",
-        default=128,
+        default=64,
         type=int,
         help="When splitting up a long document into chunks, how much stride to take between chunks.",
     )
     parser.add_argument(
         "--max_query_length",
-        default=64,
+        default=32,
         type=int,
         help="The maximum number of tokens for the question. Questions longer than this will "
         "be truncated to this length.",
@@ -580,9 +579,9 @@ def main():
         "--do_lower_case", action="store_true", help="Set this flag if you are using an uncased model."
     )
 
-    parser.add_argument("--per_gpu_train_batch_size", default=8, type=int, help="Batch size per GPU/CPU for training.")
+    parser.add_argument("--per_gpu_train_batch_size", default=16, type=int, help="Batch size per GPU/CPU for training.")
     parser.add_argument(
-        "--per_gpu_eval_batch_size", default=8, type=int, help="Batch size per GPU/CPU for evaluation."
+        "--per_gpu_eval_batch_size", default=32, type=int, help="Batch size per GPU/CPU for evaluation."
     )
     parser.add_argument("--learning_rate", default=5e-5, type=float, help="The initial learning rate for Adam.")
     parser.add_argument(
@@ -591,7 +590,7 @@ def main():
         default=1,
         help="Number of updates steps to accumulate before performing a backward/update pass.",
     )
-    parser.add_argument("--weight_decay", default=0.0, type=float, help="Weight decay if we apply some.")
+    parser.add_argument("--weight_decay", default=0.01, type=float, help="Weight decay if we apply some.")
     parser.add_argument("--adam_epsilon", default=1e-8, type=float, help="Epsilon for Adam optimizer.")
     parser.add_argument("--max_grad_norm", default=1.0, type=float, help="Max gradient norm.")
     parser.add_argument(
@@ -603,7 +602,7 @@ def main():
         type=int,
         help="If > 0: set total number of training steps to perform. Override num_train_epochs.",
     )
-    parser.add_argument("--warmup_steps", default=0, type=int, help="Linear warmup over warmup_steps.")
+    parser.add_argument("--warmup_steps", default=200, type=int, help="Linear warmup over warmup_steps.")
     parser.add_argument(
         "--n_best_size",
         default=20,
@@ -630,8 +629,8 @@ def main():
         help="language id of input for language-specific xlm models (see tokenization_xlm.PRETRAINED_INIT_CONFIGURATION)",
     )
 
-    parser.add_argument("--logging_steps", type=int, default=500, help="Log every X updates steps.")
-    parser.add_argument("--save_steps", type=int, default=500, help="Save checkpoint every X updates steps.")
+    parser.add_argument("--logging_steps", type=int, default=50, help="Log every X updates steps.")
+    parser.add_argument("--save_steps", type=int, default=5000, help="Save checkpoint every X updates steps.")
     parser.add_argument(
         "--eval_all_checkpoints",
         action="store_true",
@@ -827,4 +826,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    run_squad()

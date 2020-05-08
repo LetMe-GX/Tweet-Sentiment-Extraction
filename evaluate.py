@@ -1,7 +1,7 @@
 import json
 
-from dask.tests.test_base import np
-
+import numpy as np
+from .preprocess import get_splits
 
 def jaccard(str1, str2):
     a = set(str1.lower().split())

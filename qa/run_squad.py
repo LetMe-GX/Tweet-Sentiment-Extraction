@@ -260,7 +260,7 @@ def train(args, train_dataset, model, tokenizer):
                         loss_adv.backward()
 
                 pgd.restore()
-
+            print("Loss: {}".format(loss.item()))
             tr_loss += loss.item()
             if (step + 1) % args.gradient_accumulation_steps == 0:
                 if args.fp16:

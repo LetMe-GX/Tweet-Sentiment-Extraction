@@ -459,10 +459,11 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
     input_dir = args.data_dir if args.data_dir else "."
     cached_features_file = os.path.join(
         input_dir,
-        "cached_{}_{}_{}".format(
+        "cached_{}_{}_{}_{}".format(
             "dev" if evaluate else "train",
             list(filter(None, args.model_name_or_path.split("/"))).pop(),
             str(args.max_seq_length),
+            str(args.split)
         ),
     )
 
@@ -710,6 +711,7 @@ def run_squad(train_file, predict_file, split=0):
     parser.add_argument("--adversarial_pgd", action="store_true", help="Whether do adversarial training.")
     parser.add_argument("--adversarial_fgm", action="store_true", help="Whether do adversarial training.")
     args = parser.parse_args()
+    args.split = split
 
     if args.doc_stride >= args.max_seq_length - args.max_query_length:
         logger.warning(

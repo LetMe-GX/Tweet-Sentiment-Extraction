@@ -17,4 +17,4 @@ def run(cross_validation):
 
 
 if __name__ == '__main__':
-    run(cross_validation=False)
+    run(cross_validation=True)

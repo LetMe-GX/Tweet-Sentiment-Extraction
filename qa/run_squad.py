@@ -579,7 +579,7 @@ def run_squad(train_file, predict_file, split=0):
     )
     parser.add_argument(
         "--cache_dir",
-        default="./cache",
+        default=None,
         type=str,
         help="Where do you want to store the pre-trained models downloaded from s3",
     )
@@ -611,7 +611,7 @@ def run_squad(train_file, predict_file, split=0):
     )
     parser.add_argument(
         "--max_query_length",
-        default=32,
+        default=8,
         type=int,
         help="The maximum number of tokens for the question. Questions longer than this will "
         "be truncated to this length.",
@@ -629,7 +629,7 @@ def run_squad(train_file, predict_file, split=0):
     parser.add_argument(
         "--per_gpu_eval_batch_size", default=32, type=int, help="Batch size per GPU/CPU for evaluation."
     )
-    parser.add_argument("--learning_rate", default=5e-5, type=float, help="The initial learning rate for Adam.")
+    parser.add_argument("--learning_rate", default=3e-5, type=float, help="The initial learning rate for Adam.")
     parser.add_argument(
         "--gradient_accumulation_steps",
         type=int,
@@ -648,7 +648,7 @@ def run_squad(train_file, predict_file, split=0):
         type=int,
         help="If > 0: set total number of training steps to perform. Override num_train_epochs.",
     )
-    parser.add_argument("--warmup_steps", default=200, type=int, help="Linear warmup over warmup_steps.")
+    parser.add_argument("--warmup_steps", default=500, type=int, help="Linear warmup over warmup_steps.")
     parser.add_argument(
         "--n_best_size",
         default=20,
@@ -657,7 +657,7 @@ def run_squad(train_file, predict_file, split=0):
     )
     parser.add_argument(
         "--max_answer_length",
-        default=30,
+        default=192,
         type=int,
         help="The maximum length of an answer that can be generated. This is needed because the start "
         "and end predictions are not conditioned on one another.",

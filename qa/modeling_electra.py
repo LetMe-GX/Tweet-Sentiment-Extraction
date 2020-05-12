@@ -1,3 +1,4 @@
+import torch
 from torch import nn
 from torch.nn import CrossEntropyLoss
 from transformers import ElectraConfig
@@ -14,12 +15,13 @@ class ElectraForQuestionAnswering(ElectraPreTrainedModel):
     base_model_prefix = "electra"
 
     def __init__(self, config, weight=None):
+        config.output_hidden_states = True
         super().__init__(config)
         self.num_labels = config.num_labels
-
+        self.combine_hidden = config.combine_hidden
         self.electra = ElectraModel(config)
-        self.drop_out = nn.Dropout(0.1)
-        self.qa_outputs = nn.Linear(config.hidden_size, config.num_labels)
+        self.drop_out = nn.Dropout(config.drop_out)
+        self.qa_outputs = nn.Linear(config.hidden_size * 2, config.num_labels)
 
         self.init_weights()
 
@@ -37,7 +39,11 @@ class ElectraForQuestionAnswering(ElectraPreTrainedModel):
 
         outputs = self.electra(input_ids, attention_mask, token_type_ids, position_ids, head_mask, inputs_embeds)
         sequence_output = outputs[0]
-        sequence_output = self.drop_out(sequence_output)
+        all_hidden_states = outputs[1]
+        if self.combine_hidden:
+            sequence_output = torch.cat((all_hidden_states[-1], all_hidden_states[-2]), dim=-1)
+        else:
+            sequence_output = self.drop_out(sequence_output)
         logits = self.qa_outputs(sequence_output)
 
         start_logits, end_logits = logits.split(1, dim=-1)

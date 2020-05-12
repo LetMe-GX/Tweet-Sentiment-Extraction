@@ -710,6 +710,8 @@ def run_squad(train_file, predict_file, split=0):
     parser.add_argument("--threads", type=int, default=1, help="multiple threads for converting example to features")
     parser.add_argument("--adversarial_pgd", action="store_true", help="Whether do adversarial training.")
     parser.add_argument("--adversarial_fgm", action="store_true", help="Whether do adversarial training.")
+    parser.add_argument("--drop_out", type=int, default=0, help="drop out")
+    parser.add_argument("--hidden_layers", action="store_true", help="Combine last 2 hidden layers")
     args = parser.parse_args()
     args.split = split
 
@@ -780,6 +782,8 @@ def run_squad(train_file, predict_file, split=0):
         args.config_name if args.config_name else args.model_name_or_path,
         cache_dir=args.cache_dir if args.cache_dir else None,
     )
+    config.drop_out = args.drop_out
+    config.combine_hidden = args.combine_hidden
     tokenizer = AutoTokenizer.from_pretrained(
         args.tokenizer_name if args.tokenizer_name else args.model_name_or_path,
         do_lower_case=args.do_lower_case,

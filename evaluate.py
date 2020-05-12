@@ -15,7 +15,7 @@ def jaccard(str1, str2):
 
 def evaluate(splits, train_np, post_processing=False):
     K = len(splits)
-    predictions = [json.load(open('results/predictions_' + str(i+1) + '.json', 'r')) for i in range(K)]
+    predictions = [json.load(open('results/drop5/predictions_' + str(i+1) + '.json', 'r')) for i in range(K)]
 
     train_score = [{'neutral':[], 'positive':[], 'negative':[], 'total':[]} for _ in range(K+1)]
     valid_score = [{'neutral':[], 'positive':[], 'negative':[], 'total':[]} for _ in range(K+1)]
@@ -72,4 +72,4 @@ if __name__ == "__main__":
     train_df = pd.read_csv(os.path.join(ROOT, 'train.csv'))
     train_np = np.array(train_df)
 
-    evaluate(splits, train_np, post_processing=True)
+    evaluate(splits, train_np, post_processing=False)

@@ -719,7 +719,7 @@ def run_squad(train_file, predict_file, split=0):
             "examples. This could result in errors when building features from the examples. Please reduce the doc "
             "stride or increase the maximum length to ensure the features are correctly built."
         )
-
+    args.output_dir = "{}_{}".format(args.output_dir, args.split)
     if (
         os.path.exists(args.output_dir)
         and os.listdir(args.output_dir)

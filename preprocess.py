@@ -10,7 +10,7 @@ train_np = np.array(train_df)
 test_np = np.array(test_df)
 
 # Given a data size, return the train/valid indicies for K splits.
-K = 4
+K = 5
 def split_data(num_examples, K=5):
     np.random.seed(0)
     idx = np.arange(num_examples)

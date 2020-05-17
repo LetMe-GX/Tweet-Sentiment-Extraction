@@ -84,7 +84,7 @@ def train(args, train_dataset, model, tokenizer):
     fgm = FGM(model)
     """ Train the model """
     if args.local_rank in [-1, 0]:
-        tb_writer = SummaryWriter()
+        tb_writer = SummaryWriter(comment='{}_epochs{}'.format(args.model_type, args.num_train_epochs))
 
     args.train_batch_size = args.per_gpu_train_batch_size * max(1, args.n_gpu)
     train_sampler = RandomSampler(train_dataset) if args.local_rank == -1 else DistributedSampler(train_dataset)

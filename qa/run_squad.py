@@ -717,6 +717,9 @@ def run_squad(train_file, predict_file, split=0):
     args = parser.parse_args()
     args.split = split
 
+    if not os.path.exists('logs/'):
+        os.makedirs('logs/')
+
     if args.doc_stride >= args.max_seq_length - args.max_query_length:
         logger.warning(
             "WARNING - You've set a doc stride which may be superior to the document length in some "

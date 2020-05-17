@@ -8,7 +8,7 @@ def run(cross_validation):
     if cross_validation:
         for i in range(1, K + 1):
             train_file = os.path.join(ROOT, "split_" + str(i) + "/train.json")
-            predict_file = os.path.join(ROOT, "original/train.json")
+            predict_file = os.path.join(ROOT, "split_" + str(i) + "/val.json")
             run_squad(train_file, predict_file, split=i)
     else:
         train_file = os.path.join(ROOT, "original/train.json")

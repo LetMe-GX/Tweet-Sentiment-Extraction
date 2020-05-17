@@ -28,14 +28,17 @@ def jaccard_evaluate(examples, preds):
             print("Missing prediction for %s" % qas_id)
             continue
 
-        prediction = preds[qas_id]
+        if example.question_text == "neutral":
+            prediction = example.context_text
+        else:
+            prediction = preds[qas_id]
         jaccard_scores[qas_id] = jaccard(gold_answers[0], prediction)
 
     total = len(jaccard_scores)
     scores = collections.OrderedDict(
         [
-            ("jaccard", 100.0 * sum(jaccard_scores.values()) / total),
-            ("total", total),
+            ("jaccard", 100.0 * sum(jaccard_scores.values()) / total)
         ]
     )
+    print("eval jaccard score:", scores)
     return scores

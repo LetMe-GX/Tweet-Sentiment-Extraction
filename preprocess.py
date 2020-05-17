@@ -3,37 +3,26 @@ import pandas as pd
 import json
 import os
 
+from sklearn.model_selection import StratifiedKFold
+
 ROOT = './input/tweet-sentiment-extraction/'
 train_df = pd.read_csv(os.path.join(ROOT, 'train.csv'))
 test_df = pd.read_csv(os.path.join(ROOT, 'test.csv'))
 train_np = np.array(train_df)
 test_np = np.array(test_df)
 
+
 # Given a data size, return the train/valid indicies for K splits.
 K = 5
-def split_data(num_examples, K=5):
-    np.random.seed(0)
-    idx = np.arange(num_examples)
-    np.random.shuffle(idx)
-
-    boundary = num_examples // K
+def split_data(train_df, K=5):
+    skf = StratifiedKFold(n_splits=K, shuffle=True, random_state=916)
     splits = [{} for _ in range(K)]
-    for i in range(K):
-        splits[i]['valid_idx'] = idx[i * boundary:(i + 1) * boundary]
-        splits[i]['train_idx'] = np.concatenate((idx[:i * boundary], idx[(i + 1) * boundary:]))
-
-        valid = train_np[splits[i]['valid_idx']]
-        d = {'neutral': 0, 'positive': 0, 'negative': 0}
-        for line in valid:
-            d[line[-1]] += 1
-        print(d)
+    for fold, (idxT, idxV) in enumerate(skf.split(train_df, train_df.sentiment.values)):
+        print(fold, idxT, idxV)
+        splits[fold]['train_idx'] = idxT
+        splits[fold]['val_idx'] = idxV
 
     return splits
-
-
-def get_splits():
-    return split_data(len(train_np), K)
-
 
 # Convert data to SQuAD-style
 def convert_data(data, directory, filename):
@@ -81,7 +70,7 @@ def convert_data(data, directory, filename):
 
 
 def main():
-    splits = split_data(len(train_np), K)
+    splits = split_data(train_df, K)
 
     # convert k-fold train data
     for i, split in enumerate(splits):
@@ -89,6 +78,9 @@ def main():
         directory = 'split_' + str(i + 1)
         filename = 'train.json'
         convert_data(data, directory, filename)
+        data_val = train_np[split['val_idx']]
+        filename_val = 'val.json'
+        convert_data(data_val, directory, filename_val)
 
     # convert original train/test data
     data = train_np

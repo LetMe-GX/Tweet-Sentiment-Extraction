@@ -34,10 +34,12 @@
       <recent name="$PROJECT_DIR$/input/qa" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/input/tweet-sentiment-extraction" />
+      <recent name="$PROJECT_DIR$/input" />
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.evaluate">
+  <component name="RunManager" selected="Python.preprocess">
     <configuration name="evaluate" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Tweet-Sentiment-Extraction" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -101,15 +103,38 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Tweet-Sentiment-Extraction" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.preprocess" />
       <item itemvalue="Python.run" />
       <item itemvalue="Python.evaluate" />
+      <item itemvalue="Python.test" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.evaluate" />
         <item itemvalue="Python.preprocess" />
+        <item itemvalue="Python.test" />
+        <item itemvalue="Python.evaluate" />
         <item itemvalue="Python.run" />
       </list>
     </recent_temporary>
@@ -136,38 +161,42 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="400" y="250" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.900@0.0.1440.900" timestamp="1589722774479" />
-    <state width="1419" height="319" key="GridCell.Tab.0.bottom" timestamp="1589722361085">
+    <state width="1032" height="618" key="DebuggerActiveHint" timestamp="1589726184660">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1419" height="319" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1589722361085" />
-    <state width="1419" height="319" key="GridCell.Tab.0.center" timestamp="1589722361084">
+    <state width="1032" height="618" key="DebuggerActiveHint/0.0.1440.900@0.0.1440.900" timestamp="1589726184660" />
+    <state width="1419" height="276" key="GridCell.Tab.0.bottom" timestamp="1589726467715">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1419" height="319" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1589722361084" />
-    <state width="1419" height="319" key="GridCell.Tab.0.left" timestamp="1589722361083">
+    <state width="1419" height="276" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1589726467715" />
+    <state width="1419" height="276" key="GridCell.Tab.0.center" timestamp="1589726467714">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1419" height="319" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1589722361083" />
-    <state width="1419" height="319" key="GridCell.Tab.0.right" timestamp="1589722361085">
+    <state width="1419" height="276" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1589726467714" />
+    <state width="1419" height="276" key="GridCell.Tab.0.left" timestamp="1589726467712">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1419" height="319" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1589722361085" />
-    <state width="1419" height="224" key="GridCell.Tab.1.bottom" timestamp="1589047693746">
+    <state width="1419" height="276" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1589726467712" />
+    <state width="1419" height="276" key="GridCell.Tab.0.right" timestamp="1589726467714">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1419" height="224" key="GridCell.Tab.1.bottom/0.0.1440.900@0.0.1440.900" timestamp="1589047693746" />
-    <state width="1419" height="224" key="GridCell.Tab.1.center" timestamp="1589047693744">
+    <state width="1419" height="276" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1589726467714" />
+    <state width="1419" height="276" key="GridCell.Tab.1.bottom" timestamp="1589726467717">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1419" height="224" key="GridCell.Tab.1.center/0.0.1440.900@0.0.1440.900" timestamp="1589047693744" />
-    <state width="1419" height="224" key="GridCell.Tab.1.left" timestamp="1589047693743">
+    <state width="1419" height="276" key="GridCell.Tab.1.bottom/0.0.1440.900@0.0.1440.900" timestamp="1589726467717" />
+    <state width="1419" height="276" key="GridCell.Tab.1.center" timestamp="1589726467716">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1419" height="224" key="GridCell.Tab.1.left/0.0.1440.900@0.0.1440.900" timestamp="1589047693743" />
-    <state width="1419" height="224" key="GridCell.Tab.1.right" timestamp="1589047693745">
+    <state width="1419" height="276" key="GridCell.Tab.1.center/0.0.1440.900@0.0.1440.900" timestamp="1589726467716" />
+    <state width="1419" height="276" key="GridCell.Tab.1.left" timestamp="1589726467716">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1419" height="224" key="GridCell.Tab.1.right/0.0.1440.900@0.0.1440.900" timestamp="1589047693745" />
+    <state width="1419" height="276" key="GridCell.Tab.1.left/0.0.1440.900@0.0.1440.900" timestamp="1589726467716" />
+    <state width="1419" height="276" key="GridCell.Tab.1.right" timestamp="1589726467717">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1419" height="276" key="GridCell.Tab.1.right/0.0.1440.900@0.0.1440.900" timestamp="1589726467717" />
     <state x="259" y="89" key="SettingsEditor" timestamp="1588924114936">
       <screen x="0" y="0" width="1440" height="900" />
     </state>

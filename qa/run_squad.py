@@ -22,6 +22,7 @@ import logging
 import os
 import random
 import timeit
+from datetime import datetime
 
 import numpy as np
 import torch
@@ -39,7 +40,9 @@ from transformers import (
     get_linear_schedule_with_warmup,
     squad_convert_examples_to_features,
 )
-from transformers.data.metrics.squad_metrics import (
+
+from qa.evaluate import jaccard_evaluate
+from qa.squad_metrics import (
     compute_predictions_log_probs,
     compute_predictions_logits,
     squad_evaluate,
@@ -446,7 +449,7 @@ def evaluate(args, model, tokenizer, prefix=""):
         )
 
     # Compute the F1 and exact scores.
-    results = squad_evaluate(examples, predictions)
+    results = jaccard_evaluate(examples, predictions)
     return results
 
 
@@ -657,7 +660,7 @@ def run_squad(train_file, predict_file, split=0):
     )
     parser.add_argument(
         "--max_answer_length",
-        default=192,
+        default=64,
         type=int,
         help="The maximum length of an answer that can be generated. This is needed because the start "
         "and end predictions are not conditioned on one another.",
@@ -767,6 +770,11 @@ def run_squad(train_file, predict_file, split=0):
         bool(args.local_rank != -1),
         args.fp16,
     )
+    fileHandler = logging.FileHandler('logs/{}_{}_{}.log'.format(
+        datetime.now().strftime("%Y-%m-%d-%H:%M:%S"),
+        args.model_type,
+        args.split))
+    logger.addHandler(fileHandler)
 
     # Set seed
     set_seed(args)

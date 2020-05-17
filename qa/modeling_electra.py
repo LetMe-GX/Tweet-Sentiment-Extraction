@@ -75,7 +75,7 @@ class ElectraForQuestionAnswering(ElectraPreTrainedModel):
         config.output_hidden_states = True
         super().__init__(config)
         self.num_labels = config.num_labels
-        self.smoothing = 0.15
+        self.smoothing = 0
         self.dist_loss = False
         self.electra = ElectraModel(config)
         self.drop_out = nn.Dropout(0.3)

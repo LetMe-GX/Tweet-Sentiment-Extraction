@@ -15,7 +15,7 @@ def jaccard(str1, str2):
 
 def evaluate(splits, train_np, post_processing=False):
     K = len(splits)
-    predictions = [json.load(open('results/robert_base/predictions_' + str(i+1) + '.json', 'r')) for i in range(K)]
+    predictions = [json.load(open('results/newlossepoch3/predictions_' + str(i+1) + '.json', 'r')) for i in range(K)]
 
     train_score = [{'neutral':[], 'positive':[], 'negative':[], 'total':[]} for _ in range(K+1)]
     valid_score = [{'neutral':[], 'positive':[], 'negative':[], 'total':[]} for _ in range(K+1)]

@@ -58,7 +58,8 @@ def cal_loss(pred, target, ignore_index=None, smoothing=0.):
             weight.scatter_(-1, target.unsqueeze(-1), (1. - smoothing))
         loss = (-weight * log_prob).sum(dim=-1).mean()
     else:
-        loss = CrossEntropyLoss(pred, target, ignore_index)
+        loss_fuc = CrossEntropyLoss(ignore_index=ignore_index)
+        loss = loss_fuc(pred, target)
     return loss
 
 

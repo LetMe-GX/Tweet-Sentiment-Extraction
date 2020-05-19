@@ -3,6 +3,7 @@ from torch import nn
 from torch.nn import CrossEntropyLoss
 from transformers import ElectraConfig
 from transformers.modeling_electra import ElectraPreTrainedModel, ELECTRA_PRETRAINED_MODEL_ARCHIVE_MAP, ElectraModel
+from seq2seq import seq2seq_gru as sq
 import numpy as np
 
 def dist_between(start_logits, end_logits, max_seq_len=192):
@@ -79,8 +80,14 @@ class ElectraForQuestionAnswering(ElectraPreTrainedModel):
         self.smoothing = 0
         self.dist_loss = False
         self.electra = ElectraModel(config)
-        self.drop_out = nn.Dropout(0.3)
+
+        self.encoder = sq.Encoder(config.hidden_size,config.hidden_size,0.3)
+        self.decoder = sq.Decoder(config.hidden_size,config.hidden_size,config.hidden_size,0.3)
+
+        self.seq2seq = sq.Seq2seq(self.encoder, self.decoder)
+
         self.qa_outputs = nn.Linear(config.hidden_size, config.num_labels)
+        self.drop_out = nn.Dropout(0.3)
 
         self.init_weights()
 
@@ -97,7 +104,12 @@ class ElectraForQuestionAnswering(ElectraPreTrainedModel):
     ):
 
         outputs = self.electra(input_ids, attention_mask, token_type_ids, position_ids, head_mask, inputs_embeds)
-        sequence_output = outputs[0]
+        # outputs = [batch, seq_len, emb]
+        seq_scr = outputs[0].permute(1,0,2)
+        # seq_sct = [seq_len, batch, emb]
+        seq_output = self.seq2seq(seq_scr, seq_scr)
+        # seq_output [seq_len, batch, emb]
+        sequence_output = seq_output.permute(1,0,2)
         sequence_output = self.drop_out(sequence_output)
         logits = self.qa_outputs(sequence_output)
 

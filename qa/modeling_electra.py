@@ -3,7 +3,7 @@ from torch import nn
 from torch.nn import CrossEntropyLoss
 from transformers import ElectraConfig
 from transformers.modeling_electra import ElectraPreTrainedModel, ELECTRA_PRETRAINED_MODEL_ARCHIVE_MAP, ElectraModel
-from seq2seq import seq2seq_gru as sq
+from seq2seq import seq2seq_rnn as sq
 from seq2seq import highway as hw
 import numpy as np
 

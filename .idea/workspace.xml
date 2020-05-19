@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e1ee7395-6b25-467f-9a79-1b53d129412b" name="Default Changelist" comment="" />
+    <list default="true" id="e1ee7395-6b25-467f-9a79-1b53d129412b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Tweet-Sentiment-Extraction.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Tweet-Sentiment-Extraction.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/qa/modeling_electra.py" beforeDir="false" afterPath="$PROJECT_DIR$/qa/modeling_electra.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -197,10 +203,11 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state width="1419" height="306" key="GridCell.Tab.1.right/0.0.1440.900@0.0.1440.900" timestamp="1589727007451" />
-    <state x="259" y="89" key="SettingsEditor" timestamp="1588924114936">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state x="400" y="131" key="SettingsEditor" timestamp="1589855507291">
+      <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="259" y="89" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1588924114936" />
+    <state x="400" y="131" key="SettingsEditor/67.27.1853.1053@67.27.1853.1053" timestamp="1589855507291" />
     <state x="495" y="369" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1588961446321">
       <screen x="0" y="0" width="1440" height="900" />
     </state>

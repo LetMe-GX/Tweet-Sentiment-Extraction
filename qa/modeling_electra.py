@@ -4,6 +4,7 @@ from torch.nn import CrossEntropyLoss
 from transformers import ElectraConfig
 from transformers.modeling_electra import ElectraPreTrainedModel, ELECTRA_PRETRAINED_MODEL_ARCHIVE_MAP, ElectraModel
 from seq2seq import seq2seq_gru as sq
+from seq2seq import highway as hw
 import numpy as np
 
 def dist_between(start_logits, end_logits, max_seq_len=192):
@@ -89,6 +90,8 @@ class ElectraForQuestionAnswering(ElectraPreTrainedModel):
         self.qa_outputs = nn.Linear(config.hidden_size, config.num_labels)
         self.drop_out = nn.Dropout(0.3)
 
+        self.highway = hw.Highway(config.hidden_size, 1)
+
         self.init_weights()
 
     def forward(
@@ -109,8 +112,11 @@ class ElectraForQuestionAnswering(ElectraPreTrainedModel):
         # seq_sct = [seq_len, batch, emb]
         seq_output = self.seq2seq(seq_scr, seq_scr)
         # seq_output [seq_len, batch, emb]
-        sequence_output = seq_output.permute(1,0,2)
-        sequence_output = self.drop_out(sequence_output)
+        seq_output = seq_output.permute(1,0,2)
+        # seq_output [batch seq_len emb]
+        hw_out = self.highway(outputs[0],seq_output)
+        # seq_output [batch seq_len emb]
+        sequence_output = self.drop_out(hw_out)
         logits = self.qa_outputs(sequence_output)
 
         start_logits, end_logits = logits.split(1, dim=-1)

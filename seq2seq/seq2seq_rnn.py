@@ -12,7 +12,7 @@ class Encoder(nn.Module):
                               hidden_size=hid_dim,
                               bidirectional=True)
         else:
-            self.run = nn.LSTM(input_size=emb_dim,
+            self.rnn = nn.LSTM(input_size=emb_dim,
                                hidden_size=hid_dim,
                                bidirectional=True)
 
@@ -72,7 +72,7 @@ class Decoder(nn.Module):
             cell = None
         else:
             assert cell != None
-            output, (hidden, cell) = self.run(emb_con, hidden, cell)
+            output, (hidden, cell) = self.rnn(emb_con, (hidden, cell))
 
         output = torch.cat((embedded,
                             hidden[0],

@@ -82,8 +82,8 @@ class ElectraForQuestionAnswering(ElectraPreTrainedModel):
         self.dist_loss = False
         self.electra = ElectraModel(config)
 
-        self.encoder = sq.Encoder(config.hidden_size,config.hidden_size,0.3)
-        self.decoder = sq.Decoder(config.hidden_size,config.hidden_size,config.hidden_size,0.3)
+        self.encoder = sq.Encoder('GRU',config.hidden_size,config.hidden_size,0.3)
+        self.decoder = sq.Decoder('GRU',config.hidden_size,config.hidden_size,config.hidden_size,0.3)
 
         self.seq2seq = sq.Seq2seq(self.encoder, self.decoder)
 
